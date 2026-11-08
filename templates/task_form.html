@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block content %}
+<div class="form-card wide">
+    <p class="eyebrow">Керування справами</p><h1>{{ page_title }}</h1>
+    <form method="POST">
+        <label>Назва завдання</label>
+        <input name="title" required maxlength="180" value="{{ task.title if task else '' }}" placeholder="Наприклад, підготувати звіт">
+        <label>Опис</label>
+        <textarea name="description" rows="6" placeholder="Додаткова інформація (необов'язково)">{{ task.description if task else '' }}</textarea>
+        <div class="actions">
+            <button class="button" type="submit">Зберегти</button>
+            <a class="button secondary" href="{{ url_for('index') }}">Скасувати</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

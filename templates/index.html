@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Мої завдання{% endblock %}
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">Плануй. Виконуй. Досягай.</p>
+    <h1>Твої завдання — під контролем</h1>
+    <p>Створюй список справ, відстежуй виконання та зберігай свої плани в одному місці.</p>
+    {% if current_user.is_authenticated %}
+        <a class="button" href="{{ url_for('add_task') }}">＋ Додати завдання</a>
+    {% else %}
+        <a class="button" href="{{ url_for('register') }}">Почати користуватися</a>
+    {% endif %}
+</section>
+
+{% if current_user.is_authenticated %}
+    <div class="section-heading">
+        <h2>Мій список справ</h2>
+        <span class="count">{{ tasks|length }} завдань</span>
+    </div>
+    {% if tasks %}
+        <div class="task-list">
+            {% for task in tasks %}
+                <article class="task-card {% if task.is_completed %}completed{% endif %}">
+                    <div class="task-main">
+                        <form method="POST" action="{{ url_for('toggle_task', task_id=task.id) }}">
+                            <button class="check" type="submit" title="Змінити статус">{% if task.is_completed %}✓{% else %}○{% endif %}</button>
+                        </form>
+                        <div class="task-content">
+                            <h3>{{ task.title }}</h3>
+                            {% if task.description %}<p>{{ task.description }}</p>{% endif %}
+                            <span class="status">{% if task.is_completed %}Виконано{% else %}У процесі{% endif %}</span>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <a href="{{ url_for('edit_task', task_id=task.id) }}">Редагувати</a>
+                        <form method="POST" action="{{ url_for('delete_task', task_id=task.id) }}" onsubmit="return confirm('Видалити це завдання?');">
+                            <button class="delete-link" type="submit">Видалити</button>
+                        </form>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty">
+            <h3>Список поки порожній</h3>
+            <p>Додай перше завдання, щоб почати планувати свій день.</p>
+            <a class="button" href="{{ url_for('add_task') }}">Додати завдання</a>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="empty">
+        <h2>Особистий простір для твоїх справ</h2>
+        <p>Створи обліковий запис, щоб зберігати власні завдання. Кожен користувач має окремий список.</p>
+    </div>
+{% endif %}
+{% endblock %}

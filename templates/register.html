@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Реєстрація{% endblock %}
+{% block content %}
+<div class="form-card">
+    <p class="eyebrow">Новий обліковий запис</p><h1>Реєстрація</h1>
+    <form method="POST">
+        <label>Ім'я користувача</label>
+        <input name="username" required maxlength="80" placeholder="Ваше ім'я">
+        <label>Електронна пошта</label>
+        <input type="email" name="email" required placeholder="name@example.com">
+        <label>Пароль (від 6 символів)</label>
+        <input type="password" name="password" required minlength="6">
+        <button class="button" type="submit">Створити акаунт</button>
+    </form>
+    <p class="muted">Вже маєте акаунт? <a href="{{ url_for('login') }}">Увійти</a></p>
+</div>
+{% endblock %}
